@@ -17,8 +17,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-region: us-east-1
-          #role-to-assume: ${{ secrets.ROLE_ARN }}
-          role-to-assume: arn:aws:iam::197831068840:role/GitHub-OIDC-2-Role-SZ7TVZP5EZZ0
+          role-to-assume: ${{ secrets.ROLE_ARN }}
           role-session-name: GH-Action
       - name: Deploy to AWS CloudFormation
         uses: aws-actions/aws-cloudformation-github-deploy@v1
