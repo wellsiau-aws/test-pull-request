@@ -1,0 +1,17 @@
+name: A workflow for my Hello World file
+on: push
+jobs:
+  prep:
+    name: Upload to Amazon S3
+    runs-on: ubuntu-latest
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-region: us-east-1
+        role-to-assume: ${{ secrets.ROLE_ARN }}
+        role-session-name: GH-Action
