@@ -1,0 +1,26 @@
+name: Create a Pipeline
+on:
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+            aws-region: us-east-1
+            role-to-assume: arn:aws:iam::113835616590:role/GitHubOIDC-Test-1-Role-HNTK6VPPB87F
+            role-session-name: GitHubActionTest
+      - name: Deploy to AWS CloudFormation
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: pipeline-stack
+          template: pipeline-stack.yml
+          parameter-overrides: "CodePipelineName=GH-PR-pipeline,S3BucketName=gh-source-artifact,LogBucketName=gh-build-artifact,GithubOwner=wellsiau-aws,GithubRepo=test-pull-request,GithubBranch=main,GithubToken=${{ secrets.REPO_ACCESS_TOKEN }}"
