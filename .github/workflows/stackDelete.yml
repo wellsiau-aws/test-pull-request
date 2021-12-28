@@ -13,7 +13,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v1
       with:
           aws-region: us-east-1
-          role-to-assume: arn:aws:iam::113835616590:role/GitHubOIDC-Test-1-Role-HNTK6VPPB87F
+          role-to-assume: ${{ secrets.ROLE_ARN }}
           role-session-name: GitHubActionTest
         
     - name: Delete Cloudformation stack
