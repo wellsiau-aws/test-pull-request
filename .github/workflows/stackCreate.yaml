@@ -10,13 +10,14 @@ jobs:
       contents: read
       packages: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-region: "us-east-1"
-          role-to-assume: "arn:aws:iam::197831068840:role/GitHub-OIDC-2-Role-SZ7TVZP5EZZ0"
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.ROLE_ARN }}
+          role-session-name: GH-Action
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Deploy to AWS CloudFormation
         uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
