@@ -15,9 +15,9 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-            aws-region: us-east-1
-            role-to-assume: ${{ secrets.ROLE_ARN }}
-            role-session-name: GitHubActionTest
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.ROLE_ARN }}
+          role-session-name: GH-Action
       - name: Deploy to AWS CloudFormation
         uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
