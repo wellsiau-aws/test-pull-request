@@ -1,8 +1,10 @@
 name: A workflow for my Hello World file
-on: push
+on:
+  pull_request:
+    branches: [ main ]
 jobs:
   prep:
-    name: Upload to Amazon S3
+    name: Create Pipeline
     runs-on: ubuntu-latest
     # These permissions are needed to interact with GitHub's OIDC Token endpoint.
     permissions:
@@ -17,3 +19,9 @@ jobs:
           aws-region: us-east-1
           role-to-assume: ${{ secrets.ROLE_ARN }}
           role-session-name: GH-Action
+      - name: Deploy to AWS CloudFormation
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: pipeline-stack
+          template: pipeline-stack.yml
+          parameter-overrides: "CodePipelineName=GH-PR-pipeline,S3BucketName=gh-source-artifact,LogBucketName=gh-build-artifact,GithubOwner=wellsiau-aws,GithubRepo=test-pull-request,GithubBranch=main,GithubToken=${{ secrets.REPO_ACCESS_TOKEN }}"
